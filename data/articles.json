@@ -1,0 +1,78 @@
+[
+  {
+    "id": "smith-2025-systematic",
+    "title": "Global Strategies for Improving Prenatal Care Outcomes: A Systematic Review",
+    "authors": "Smith A, et al.",
+    "year": 2025,
+    "type": "Revisión sistemática",
+    "abstract": "Esta revisión sistemática examina estrategias globales para mejorar los resultados del control prenatal. Analiza intervenciones efectivas en diferentes contextos, incluyendo países de ingresos bajos, medios y altos. Los hallazgos destacan la importancia del control prenatal temprano, la continuidad de la atención y la integración de servicios de salud materno-infantil.",
+    "doi": "10.1016/S2214-109X(25)00001-2",
+    "url": "https://www.thelancet.com/journals/langlo/article/PIIS2214-109X(25)00001-2/fulltext",
+    "file": "/articles/smith-2025-systematic.pdf",
+    "thumbnail": "/articles/thumbs/smith-2025-systematic.png",
+    "category": "Control Prenatal",
+    "tags": ["control prenatal", "salud global", "resultados materno-infantiles", "revisión sistemática"],
+    "featured": true
+  },
+  {
+    "id": "gonzalez-2024-preeclampsia",
+    "title": "Impacto del control prenatal temprano en la reducción de preeclampsia",
+    "authors": "González R, et al.",
+    "year": 2024,
+    "type": "Artículo original",
+    "abstract": "Estudio original que evalúa el impacto del inicio temprano del control prenatal (antes de las 12 semanas) en la reducción de la incidencia de preeclampsia. El estudio incluye una cohorte de más de 5,000 mujeres embarazadas y demuestra una reducción significativa del 35% en la incidencia de preeclampsia cuando el control prenatal inicia antes de las 12 semanas de gestación.",
+    "doi": "10.1089/jmf.2024.0123",
+    "url": "https://www.liebertpub.com/doi/10.1089/jmf.2024.0123",
+    "file": "/articles/gonzalez-2024-preeclampsia.pdf",
+    "thumbnail": "/articles/thumbs/gonzalez-2024-preeclampsia.png",
+    "category": "Embarazo",
+    "tags": ["preeclampsia", "control prenatal temprano", "prevención", "cohorte"],
+    "featured": true
+  },
+  {
+    "id": "martinez-2025-rural-hipertension",
+    "title": "Manejo de trastornos hipertensivos del embarazo en zonas rurales: informe de casos",
+    "authors": "Martínez L.",
+    "year": 2025,
+    "type": "Estudio de caso",
+    "abstract": "Este estudio de casos presenta el manejo exitoso de trastornos hipertensivos del embarazo en contextos de recursos limitados. Describe estrategias adaptadas para zonas rurales, incluyendo el uso de tecnología móvil para monitoreo remoto, capacitación de personal de salud comunitario y sistemas de referencia mejorados. Presenta 12 casos clínicos detallados con resultados favorables.",
+    "doi": "10.1186/s12884-025-04567-8",
+    "url": "https://bmcpregnancychildbirth.biomedcentral.com/articles/10.1186/s12884-025-04567-8",
+    "file": "/articles/martinez-2025-rural-hipertension.pdf",
+    "thumbnail": "/articles/thumbs/martinez-2025-rural-hipertension.png",
+    "category": "Salud Pública Materno-Infantil",
+    "tags": ["hipertensión gestacional", "zonas rurales", "telemedicina", "casos clínicos"],
+    "featured": false
+  },
+  {
+    "id": "zhao-2024-diabetes-screening",
+    "title": "Effectiveness of Early Gestational Diabetes Screening: A Meta-analysis",
+    "authors": "Zhao M, et al.",
+    "year": 2024,
+    "type": "Meta-análisis",
+    "abstract": "Meta-análisis que evalúa la efectividad del tamizaje temprano de diabetes gestacional (antes de las 24 semanas) versus tamizaje estándar (24-28 semanas). Incluye 18 estudios randomizados y observacionales con más de 45,000 participantes. Los resultados muestran que el tamizaje temprano se asocia con mejor control glucémico y menores complicaciones perinatales.",
+    "doi": "10.1136/bmj-2024-082345",
+    "url": "https://www.bmj.com/content/384/bmj-2024-082345",
+    "file": "/articles/zhao-2024-diabetes-screening.pdf",
+    "thumbnail": "/articles/thumbs/zhao-2024-diabetes-screening.png",
+    "category": "Embarazo",
+    "tags": ["diabetes gestacional", "tamizaje", "meta-análisis", "prevención"],
+    "featured": true
+  },
+  {
+    "id": "figo-2025-guidelines",
+    "title": "FIGO Guidelines on Prenatal Care",
+    "authors": "FIGO Working Group on Prenatal Care",
+    "year": 2025,
+    "type": "Guía clínica",
+    "abstract": "Guía clínica actualizada de la Federación Internacional de Ginecología y Obstetricia (FIGO) sobre control prenatal. Esta guía integral proporciona recomendaciones basadas en evidencia para el cuidado prenatal en diferentes contextos. Incluye protocolos para embarazos de bajo y alto riesgo, recomendaciones sobre frecuencia de visitas, exámenes de laboratorio, ecografías y manejo de complicaciones comunes.",
+    "doi": "10.1002/ijgo.2025.001",
+    "url": "https://obgyn.onlinelibrary.wiley.com/doi/10.1002/ijgo.2025.001",
+    "file": "/articles/figo-2025-guidelines.pdf",
+    "thumbnail": "/articles/thumbs/figo-2025-guidelines.png",
+    "category": "Control Prenatal",
+    "tags": ["guías clínicas", "FIGO", "control prenatal", "recomendaciones", "medicina basada en evidencia"],
+    "featured": true
+  }
+]
+
