@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
+import Image from "next/image";
 import { 
   Calculator, 
   Calendar, 
@@ -71,60 +72,7 @@ export default function Home() {
     <div>
       <Hero />
 
-      {/* Imagen de Inicio */}
-      <section className="py-12 bg-gradient-to-br from-pink-50/80 via-purple-50/60 to-violet-50/80">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <ScrollReveal>
-            <ImageCard
-              imageSrc="/INICIO PAGINA.jpg"
-              title="Bienvenida a tu embarazo"
-              description="Tu compañera digital durante esta hermosa etapa"
-              delay={0.1}
-            />
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-              Todo lo que necesitas saber
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Recursos completos y herramientas interactivas para acompañarte 
-              en cada etapa de tu embarazo.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <Link key={index} href={feature.href}>
-                  <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-primary/50">
-                    <CardHeader>
-                      <div className={`mb-4 ${feature.color}`}>
-                        <Icon className="h-10 w-10" />
-                      </div>
-                      <CardTitle>{feature.title}</CardTitle>
-                      <CardDescription>{feature.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Button variant="ghost" className="w-full">
-                        Explorar →
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Sección: ¿Qué son los controles prenatales? */}
+      {/* Sección: ¿Qué son los controles prenatales? - Movida aquí debajo del Hero */}
       <section className="py-20 bg-gradient-to-br from-pink-50/80 via-purple-50/60 to-violet-50/80">
         <div className="container mx-auto px-4 max-w-6xl">
           <ScrollReveal>
@@ -161,37 +109,18 @@ export default function Home() {
             >
               <Card className="bg-white/90 backdrop-blur-sm shadow-xl border-2 border-primary/20 overflow-hidden">
                 <div className="grid md:grid-cols-2 gap-0">
-                  {/* Ilustración animada */}
+                  {/* Imagen real en lugar de JSON */}
                   <div className="relative bg-gradient-to-br from-primary/10 to-secondary/10 p-8 flex items-center justify-center min-h-[300px]">
-                    <motion.div
-                      animate={{
-                        y: [0, -20, 0],
-                        rotate: [0, 5, -5, 0],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="relative"
-                    >
-                      <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-                      <Baby className="w-32 h-32 text-primary relative z-10" />
-                    </motion.div>
-                    <motion.div
-                      animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.6, 0.3],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="absolute inset-0 flex items-center justify-center"
-                    >
-                      <Heart className="w-24 h-24 text-secondary/30" />
-                    </motion.div>
+                    <div className="relative w-full h-full">
+                      <Image
+                        src="/INICIO PAGINA.png"
+                        alt="Control prenatal - Embarazo saludable"
+                        width={400}
+                        height={300}
+                        className="object-contain rounded-lg"
+                        priority
+                      />
+                    </div>
                   </div>
 
                   {/* Contenido de texto */}
@@ -241,6 +170,68 @@ export default function Home() {
               </Card>
             </motion.div>
           </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Imagen de Inicio */}
+      <section className="py-12 bg-gradient-to-br from-pink-50/80 via-purple-50/60 to-violet-50/80">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <ScrollReveal>
+            <div className="relative w-full h-auto rounded-xl overflow-hidden shadow-2xl">
+              <Image
+                src="/INICIO PAGINA.png"
+                alt="Inicio Maternidad Interactiva"
+                width={800}
+                height={600}
+                priority
+                className="w-full h-auto object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-8 left-8 right-8 text-white z-10">
+                <h2 className="text-3xl md:text-4xl font-bold mb-2">Bienvenida a tu embarazo</h2>
+                <p className="text-lg md:text-xl">Tu compañera digital durante esta hermosa etapa</p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+              Todo lo que necesitas saber
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Recursos completos y herramientas interactivas para acompañarte 
+              en cada etapa de tu embarazo.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <Link key={index} href={feature.href}>
+                  <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-primary/50">
+                    <CardHeader>
+                      <div className={`mb-4 ${feature.color}`}>
+                        <Icon className="h-10 w-10" />
+                      </div>
+                      <CardTitle>{feature.title}</CardTitle>
+                      <CardDescription>{feature.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Button variant="ghost" className="w-full">
+                        Explorar →
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
 

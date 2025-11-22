@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Calculator, Info } from "lucide-react";
+import { Calendar, Calculator, Info, History, Trash2 } from "lucide-react";
 import { differenceInWeeks, differenceInDays, format } from "date-fns";
+import { saveCalculatorResult, getCalculatorHistoryByType, CalculatorResult } from "@/lib/calculatorStorage";
 
 export default function SemanasGestacionPage() {
   const [fum, setFum] = useState("");
@@ -19,6 +20,12 @@ export default function SemanasGestacionPage() {
     days: number;
     method: string;
   } | null>(null);
+  const [history, setHistory] = useState<CalculatorResult[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+
+  useEffect(() => {
+    setHistory(getCalculatorHistoryByType("Semanas de Gestación"));
+  }, []);
 
   const calculateByFUM = () => {
     if (!fum) return;
@@ -26,7 +33,20 @@ export default function SemanasGestacionPage() {
     const today = new Date();
     const weeks = differenceInWeeks(today, fumDate);
     const days = differenceInDays(today, fumDate) % 7;
-    setResult({ weeks, days, method: "FUM" });
+    const resultData = { weeks, days, method: "FUM" };
+    setResult(resultData);
+    
+    // Guardar en localStorage
+    const now = new Date();
+    saveCalculatorResult({
+      fecha: format(now, "yyyy-MM-dd HH:mm"),
+      resultado: `${weeks} semanas${days > 0 ? ` y ${days} días` : ""} (Método: FUM)`,
+      tipo: "Semanas de Gestación",
+      detalles: { weeks, days, method: "FUM", fum }
+    });
+    
+    // Actualizar historial
+    setHistory(getCalculatorHistoryByType("Semanas de Gestación"));
   };
 
   const calculateByEco = () => {
@@ -38,7 +58,20 @@ export default function SemanasGestacionPage() {
     const weeksSinceEco = Math.floor(daysSinceEco / 7);
     const totalWeeks = ecoWeeksNum + weeksSinceEco;
     const totalDays = daysSinceEco % 7;
-    setResult({ weeks: totalWeeks, days: totalDays, method: "Ecografía" });
+    const resultData = { weeks: totalWeeks, days: totalDays, method: "Ecografía" };
+    setResult(resultData);
+    
+    // Guardar en localStorage
+    const now = new Date();
+    saveCalculatorResult({
+      fecha: format(now, "yyyy-MM-dd HH:mm"),
+      resultado: `${totalWeeks} semanas${totalDays > 0 ? ` y ${totalDays} días` : ""} (Método: Ecografía)`,
+      tipo: "Semanas de Gestación",
+      detalles: { weeks: totalWeeks, days: totalDays, method: "Ecografía", ecoDate, ecoWeeks: ecoWeeksNum }
+    });
+    
+    // Actualizar historial
+    setHistory(getCalculatorHistoryByType("Semanas de Gestación"));
   };
 
   return (
@@ -64,9 +97,20 @@ export default function SemanasGestacionPage() {
         >
           <Card>
             <CardHeader>
-              <div className="flex items-center space-x-3 mb-2">
-                <Calculator className="h-6 w-6 text-primary" />
-                <CardTitle>Selecciona el método de cálculo</CardTitle>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-3">
+                  <Calculator className="h-6 w-6 text-primary" />
+                  <CardTitle>Selecciona el método de cálculo</CardTitle>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="flex items-center gap-2"
+                >
+                  <History className="h-4 w-4" />
+                  Historial ({history.length})
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
@@ -150,7 +194,55 @@ export default function SemanasGestacionPage() {
                             Tu bebé está creciendo y desarrollándose. Continúa con tus 
                             controles prenatales regulares.
                           </p>
+                          <p className="text-xs text-muted-foreground mt-2">
+                            ✓ Resultado guardado en tu historial
+                          </p>
                         </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+
+              {showHistory && history.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6"
+                >
+                  <Card className="bg-secondary/10 border-secondary/30">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-secondary flex items-center gap-2">
+                          <History className="h-5 w-5" />
+                          Historial de Cálculos
+                        </CardTitle>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setShowHistory(false)}
+                        >
+                          Cerrar
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2 max-h-64 overflow-y-auto">
+                        {history.map((item, index) => (
+                          <div
+                            key={index}
+                            className="bg-white rounded-lg p-3 border border-secondary/20"
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold">{item.resultado}</p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {item.fecha}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>

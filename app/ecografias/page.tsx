@@ -46,7 +46,7 @@ const ecografias: Ecografia[] = [
     weekRange: "Semana 6-8",
     title: "Ecografía de Confirmación",
     shortDescription: "Confirma presencia del embarazo, localización intrauterina y latido cardíaco",
-    image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=900&h=240&fit=crop&q=80",
+    image: "/ecografias/confirmacion.jpg",
     icon: Heart,
     color: "from-pink-200 to-rose-200",
     details: {
@@ -72,7 +72,7 @@ const ecografias: Ecografia[] = [
     weekRange: "Semana 11-14",
     title: "Ecografía del Primer Trimestre (Translucencia Nucal)",
     shortDescription: "Mide translucencia nucal, evalúa desarrollo fetal y riesgo cromosómico",
-    image: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=900&h=240&fit=crop&q=80",
+    image: "/ecografias/translucencia.jpg",
     icon: Eye,
     color: "from-purple-200 to-violet-200",
     details: {
@@ -98,7 +98,7 @@ const ecografias: Ecografia[] = [
     weekRange: "Semana 18-22",
     title: "Ecografía Morfológica",
     shortDescription: "Evaluación anatómica completa - La MÁS importante del embarazo",
-    image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=900&h=240&fit=crop&q=80",
+    image: "/ecografias/morfologica.jpg",
     icon: Baby,
     color: "from-blue-200 to-cyan-200",
     details: {
@@ -126,7 +126,7 @@ const ecografias: Ecografia[] = [
     weekRange: "Semana 28-32",
     title: "Ecografía de Crecimiento",
     shortDescription: "Evalúa crecimiento fetal, movimientos, líquido amniótico y bienestar",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=900&h=240&fit=crop&q=80",
+    image: "/ecografias/crecimiento.jpg",
     icon: TrendingUp,
     color: "from-green-200 to-emerald-200",
     details: {
@@ -153,7 +153,7 @@ const ecografias: Ecografia[] = [
     weekRange: "Semana 36-38",
     title: "Ecografía Final",
     shortDescription: "Evalúa posición fetal, peso estimado y preparación para el parto",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=900&h=240&fit=crop&q=80",
+    image: "/ecografias/final.jpg",
     icon: CheckCircle2,
     color: "from-amber-200 to-orange-200",
     details: {
@@ -280,11 +280,22 @@ export default function EcografiasPage() {
                 >
                   <Card className="h-full overflow-hidden border-2 hover:border-primary/50 transition-all shadow-lg hover:shadow-xl bg-white/90 backdrop-blur-sm">
                     {/* Imagen */}
-                    <div className={cn("relative h-48 bg-gradient-to-br", eco.color)}>
-                      <div className="absolute inset-0 flex items-center justify-center">
+                    <div className={cn("relative h-48 bg-gradient-to-br", eco.color, "overflow-hidden")}>
+                      <img
+                        src={eco.image}
+                        alt={eco.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const fallback = target.parentElement?.querySelector('.icon-fallback') as HTMLElement;
+                          if (fallback) fallback.style.display = 'flex';
+                        }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center icon-fallback" style={{ display: 'none' }}>
                         <eco.icon className="w-24 h-24 text-white/80" />
                       </div>
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-md">
+                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-md z-10">
                         <span className="text-sm font-bold text-primary">Semana {eco.week}</span>
                       </div>
                     </div>

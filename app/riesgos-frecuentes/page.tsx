@@ -17,7 +17,7 @@ export default function RiesgosFrecuentesPage() {
       calculator: "/calculadoras/riesgo-preeclampsia",
       color: "bg-red-50 border-red-200",
       textColor: "text-red-900",
-      image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=600&h=400&fit=crop&q=80",
+      image: "/riesgos/preeclampsia.jpg",
       icon: Activity,
       gradient: "from-red-100 to-orange-100",
     },
@@ -28,7 +28,7 @@ export default function RiesgosFrecuentesPage() {
       calculator: "/calculadoras/riesgo-hipertension",
       color: "bg-orange-50 border-orange-200",
       textColor: "text-orange-900",
-      image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&h=400&fit=crop&q=80",
+      image: "/riesgos/hta.jpg",
       icon: Heart,
       gradient: "from-orange-100 to-amber-100",
     },
@@ -39,7 +39,7 @@ export default function RiesgosFrecuentesPage() {
       calculator: "/calculadoras/riesgo-diabetes",
       color: "bg-blue-50 border-blue-200",
       textColor: "text-blue-900",
-      image: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=600&h=400&fit=crop&q=80",
+      image: "/riesgos/diabetes.jpg",
       icon: Activity,
       gradient: "from-blue-100 to-cyan-100",
     },
@@ -50,7 +50,7 @@ export default function RiesgosFrecuentesPage() {
       calculator: "/calculadoras/riesgo-parto-prematuro",
       color: "bg-purple-50 border-purple-200",
       textColor: "text-purple-900",
-      image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&q=80",
+      image: "/riesgos/parto-prematuro.jpg",
       icon: Baby,
       gradient: "from-purple-100 to-pink-100",
     },
@@ -61,7 +61,7 @@ export default function RiesgosFrecuentesPage() {
       calculator: "/calculadoras/riesgo-hemorragia",
       color: "bg-pink-50 border-pink-200",
       textColor: "text-pink-900",
-      image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=600&h=400&fit=crop&q=80",
+      image: "/riesgos/hemorragia.jpg",
       icon: Droplet,
       gradient: "from-pink-100 to-rose-100",
     },
@@ -133,9 +133,16 @@ export default function RiesgosFrecuentesPage() {
                       <img
                         src={riesgo.image}
                         alt={riesgo.title}
-                        className="w-full h-full object-cover opacity-40"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          // Mostrar icono como fallback
+                          const fallback = target.parentElement?.querySelector('.icon-fallback') as HTMLElement;
+                          if (fallback) fallback.style.display = 'flex';
+                        }}
                       />
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center icon-fallback" style={{ display: 'none' }}>
                         <motion.div
                           animate={{
                             scale: [1, 1.2, 1],

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, MapPin, Clock, AlertTriangle, Users, Heart } from "lucide-react";
+import { Phone, MapPin, Clock, AlertTriangle, Users, Heart, Mail, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageCard from "@/components/ImageCard";
@@ -111,14 +111,35 @@ export default function ContactoPage() {
                     <div>
                       <p className="font-semibold">Línea de Emergencias</p>
                       <p className="text-sm text-muted-foreground">
-                        Llama al 911 o número de emergencias de tu país
+                        161 - SUMA (Servicio de Urgencias Médicas Ambulatorias)
                       </p>
                     </div>
                   </div>
                 </div>
+                
+                {/* Mapa de Google Maps */}
+                <div className="bg-white rounded-lg p-4">
+                  <p className="font-semibold mb-2 text-sm">Centros de salud cercanos:</p>
+                  <div className="w-full h-64 rounded-lg overflow-hidden border border-gray-200">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3825.5!2d-68.1195!3d-16.5000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTbCsDMwJzAwLjAiUyA2OMKwMDcnMTAuMiJX!5e0!3m2!1ses!2sbo!4v1234567890"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Mapa de centros de salud"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    * Mapa mostrando centros de salud y hospitales cercanos
+                  </p>
+                </div>
+                
                 <Button variant="destructive" size="lg" className="w-full">
                   <Phone className="mr-2 h-5 w-5" />
-                  Llamar a Emergencias: 911
+                  Llamar a Emergencias: 161 - SUMA
                 </Button>
               </div>
             </CardContent>
@@ -136,19 +157,44 @@ export default function ContactoPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3 text-sm text-muted-foreground">
-                  <p>
-                    <strong>Médico tratante:</strong> [Tu médico]
-                  </p>
-                  <p>
-                    <strong>Teléfono:</strong> [Número de contacto]
-                  </p>
-                  <p>
-                    <strong>Horario de atención:</strong> [Horario]
-                  </p>
-                  <p className="text-xs mt-4">
-                    * Actualiza esta información con tus datos de contacto médicos
-                  </p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-start space-x-2">
+                    <Users className="h-4 w-4 text-primary mt-1" />
+                    <div>
+                      <p className="font-semibold text-gray-900">Equipo Médico</p>
+                      <p className="text-muted-foreground">
+                        Dr. Jose Luis Barriga Vera, Dra. Lucy Reyna Ariñez Mancilla, 
+                        Dr. Nelson Mauricio Massy Ramos, Dra. Noemi Celina Mendoza Sarco, 
+                        Dr. Hugo Antonio Chavez Lopez
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Mail className="h-4 w-4 text-primary" />
+                    <a href="mailto:maternidadinteractiva306@outlook.es" className="text-primary hover:underline">
+                      maternidadinteractiva306@outlook.es
+                    </a>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <MessageCircle className="h-4 w-4 text-primary" />
+                    <a 
+                      href="https://wa.me/59176284890" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline"
+                    >
+                      +591 76284890
+                    </a>
+                  </div>
+                  <div className="flex items-center space-x-2 text-muted-foreground">
+                    <Clock className="h-4 w-4" />
+                    <span>🕒 Todos los días los 365 días del año</span>
+                  </div>
+                  <Link href="/equipo-medico">
+                    <Button variant="outline" className="w-full mt-4">
+                      Ver Equipo Médico Completo
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -163,16 +209,16 @@ export default function ContactoPage() {
               <CardContent>
                 <div className="space-y-3 text-sm text-muted-foreground">
                   <p>
-                    <strong>Hospital/Centro:</strong> [Nombre]
+                    <strong>Hospital/Centro:</strong> Consulta con tu médico tratante
                   </p>
                   <p>
-                    <strong>Dirección:</strong> [Dirección]
+                    <strong>Dirección:</strong> Según tu centro de salud asignado
                   </p>
                   <p>
-                    <strong>Teléfono de emergencias:</strong> [Número]
+                    <strong>Teléfono de emergencias:</strong> 161 - SUMA
                   </p>
-                  <p className="text-xs mt-4">
-                    * Actualiza esta información con tu centro de salud
+                  <p className="text-xs mt-4 text-amber-600">
+                    * Para información específica de tu centro de salud, contacta a tu médico tratante
                   </p>
                 </div>
               </CardContent>

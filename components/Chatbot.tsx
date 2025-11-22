@@ -250,63 +250,103 @@ export default function Chatbot() {
   };
 
   const showTourStep = (stepIndex: number) => {
-    if (stepIndex >= TOUR_STEPS.length) {
-      endTour();
-      return;
+    try {
+      // Validar índice
+      if (stepIndex < 0 || stepIndex >= TOUR_STEPS.length) {
+        console.warn(`Invalid step index: ${stepIndex}, resetting to 0`);
+        setTourStep(0);
+        if (TOUR_STEPS.length > 0) {
+          showTourStep(0);
+        } else {
+          endTour();
+        }
+        return;
+      }
+
+      const step = TOUR_STEPS[stepIndex];
+      if (!step) {
+        console.error(`Step at index ${stepIndex} is undefined`);
+        endTour();
+        return;
+      }
+
+      const isLast = stepIndex === TOUR_STEPS.length - 1;
+
+      // Guardar el paso actual en localStorage para persistencia
+      localStorage.setItem("mi360_tour_step", stepIndex.toString());
+      localStorage.setItem("mi360_tour_active", "true");
+
+      const stepMessage: Message = {
+        id: Date.now(),
+        text: `${stepIndex + 1}/${TOUR_STEPS.length}: ${step.section}\n\n${step.description}`,
+        sender: "bot",
+        timestamp: new Date(),
+        actions: [
+          {
+            label: "Ir a esta sección",
+            action: () => {
+              try {
+                // Guardar el paso antes de navegar
+                localStorage.setItem("mi360_tour_step", stepIndex.toString());
+                localStorage.setItem("mi360_tour_active", "true");
+                router.push(step.route);
+                // NO llamar a nextTourStep aquí porque puede perderse el estado al navegar
+                // En su lugar, el usuario puede continuar con "Siguiente" después de ver la página
+              } catch (error) {
+                console.error("Error navigating to section:", error);
+              }
+            },
+            variant: "primary",
+          },
+          {
+            label: isLast ? "Finalizar" : "Siguiente",
+            action: () => {
+              nextTourStep();
+            },
+            variant: "secondary",
+          },
+          {
+            label: "Saltar tour",
+            action: () => skipTour(),
+            variant: "secondary",
+          },
+        ],
+      };
+
+      setMessages([stepMessage]);
+    } catch (error) {
+      console.error("Error in showTourStep:", error);
+      // En caso de error, intentar continuar o finalizar el tour
+      if (stepIndex + 1 < TOUR_STEPS.length) {
+        setTimeout(() => showTourStep(stepIndex + 1), 100);
+      } else {
+        endTour();
+      }
     }
-
-    const step = TOUR_STEPS[stepIndex];
-    const isLast = stepIndex === TOUR_STEPS.length - 1;
-
-    // Guardar el paso actual en localStorage para persistencia
-    localStorage.setItem("mi360_tour_step", stepIndex.toString());
-    localStorage.setItem("mi360_tour_active", "true");
-
-    const stepMessage: Message = {
-      id: Date.now(),
-      text: `${stepIndex + 1}/${TOUR_STEPS.length}: ${step.section}\n\n${step.description}`,
-      sender: "bot",
-      timestamp: new Date(),
-      actions: [
-        {
-          label: "Ir a esta sección",
-          action: () => {
-            // Guardar el paso antes de navegar
-            localStorage.setItem("mi360_tour_step", stepIndex.toString());
-            localStorage.setItem("mi360_tour_active", "true");
-            router.push(step.route);
-            // NO llamar a nextTourStep aquí porque puede perderse el estado al navegar
-            // En su lugar, el usuario puede continuar con "Siguiente" después de ver la página
-          },
-          variant: "primary",
-        },
-        {
-          label: isLast ? "Finalizar" : "Siguiente",
-          action: () => {
-            nextTourStep();
-          },
-          variant: "secondary",
-        },
-        {
-          label: "Saltar tour",
-          action: () => skipTour(),
-          variant: "secondary",
-        },
-      ],
-    };
-
-    setMessages([stepMessage]);
   };
 
   const nextTourStep = () => {
-    const next = tourStep + 1;
-    setTourStep(next);
-    // Guardar el nuevo paso
-    localStorage.setItem("mi360_tour_step", next.toString());
-    if (next < TOUR_STEPS.length) {
-      showTourStep(next);
-    } else {
-      endTour();
+    try {
+      const next = tourStep + 1;
+      setTourStep(next);
+      // Guardar el nuevo paso
+      localStorage.setItem("mi360_tour_step", next.toString());
+      if (next < TOUR_STEPS.length) {
+        showTourStep(next);
+      } else {
+        endTour();
+      }
+    } catch (error) {
+      console.error("Error in nextTourStep:", error);
+      // Si hay error, intentar continuar desde el siguiente paso válido
+      const safeNext = Math.min(tourStep + 1, TOUR_STEPS.length - 1);
+      setTourStep(safeNext);
+      localStorage.setItem("mi360_tour_step", safeNext.toString());
+      if (safeNext < TOUR_STEPS.length) {
+        showTourStep(safeNext);
+      } else {
+        endTour();
+      }
     }
   };
 

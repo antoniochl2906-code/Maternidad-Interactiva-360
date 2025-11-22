@@ -163,20 +163,54 @@ export default function DiscusionCientificaPage() {
   const [newComment, setNewComment] = useState("");
   const [isAdmin] = useState(false); // En producción, esto vendría de autenticación
 
-  // Load articles from JSON file
+  // Load articles from JSON file and detect PDFs
   useEffect(() => {
     const loadArticles = async () => {
       try {
+        // Lista de PDFs conocidos en /public/articles
+        const pdfFiles = [
+          { name: "adel-2025-meta.pdf", title: "Meta-análisis sobre Control Prenatal 2025", year: 2025, type: "Meta-análisis" },
+          { name: "barradas-2024-systematic.pdf", title: "Revisión Sistemática - Barradas 2024", year: 2024, type: "Revisión Sistemática" },
+          { name: "butler-2024-systematic.pdf", title: "Revisión Sistemática - Butler 2024", year: 2024, type: "Revisión Sistemática" },
+          { name: "carrizo-2023-guidelines.pdf", title: "Guías Clínicas - Carrizo 2023", year: 2023, type: "Guía Clínica" },
+          { name: "mocayo-2025-systematic.pdf", title: "Revisión Sistemática - Mocayo 2025", year: 2025, type: "Revisión Sistemática" },
+          { name: "nazzal-2024-original.pdf", title: "Artículo Original - Nazzal 2024", year: 2024, type: "Artículo Original" },
+          { name: "oprescu-2020-original.pdf", title: "Artículo Original - Oprescu 2020", year: 2020, type: "Artículo Original" },
+          { name: "veloz-2012-original.pdf", title: "Artículo Original - Veloz 2012", year: 2012, type: "Artículo Original" },
+        ];
+
+        // Crear artículos desde PDFs
+        const pdfArticles: Article[] = pdfFiles.map((pdf, index) => ({
+          id: `pdf-${index + 1}`,
+          title: pdf.title,
+          summary: `Artículo científico disponible en formato PDF. ${pdf.type} publicado en ${pdf.year}.`,
+          category: "Control Prenatal",
+          studyType: pdf.type,
+          publicationDate: `${pdf.year}-01-01`,
+          year: pdf.year,
+          pdfUrl: `/articles/${pdf.name}`,
+          file: `/articles/${pdf.name}`,
+          image: `/articles/thumbs/${pdf.name.replace('.pdf', '.jpg')}`,
+          thumbnail: `/articles/thumbs/${pdf.name.replace('.pdf', '.jpg')}`,
+          tags: ["control prenatal", "salud materno-infantil", pdf.type.toLowerCase()],
+          comments: [],
+        }));
+
         // Try to load from API first
-        let response = await fetch("/api/articles");
-        
-        // Fallback to direct JSON file if API fails
-        if (!response.ok) {
-          response = await fetch("/data/articles.json");
-          if (!response.ok) throw new Error("Failed to fetch articles");
+        let jsonArticles: Article[] = [];
+        try {
+          let response = await fetch("/api/articles");
+          if (response.ok) {
+            jsonArticles = await response.json();
+          } else {
+            response = await fetch("/data/articles.json");
+            if (response.ok) {
+              jsonArticles = await response.json();
+            }
+          }
+        } catch (apiError) {
+          console.log("API/JSON not available, using PDFs only");
         }
-        
-        const jsonArticles: Article[] = await response.json();
         
         // Transform JSON articles to match the interface (compatibility layer)
         const transformedArticles: Article[] = jsonArticles.map((article) => ({
@@ -191,13 +225,20 @@ export default function DiscusionCientificaPage() {
           comments: article.comments || [],
         }));
 
-        // Combine with initial articles for backward compatibility
-        setArticles([...transformedArticles, ...initialArticles.filter(ia => 
-          !transformedArticles.find(ta => ta.id === ia.id || ta.title === ia.title)
-        )]);
+        // Combine: PDFs first, then JSON articles, then initial articles (avoiding duplicates)
+        const allArticles = [
+          ...pdfArticles,
+          ...transformedArticles.filter(ta => !pdfArticles.find(pa => pa.title === ta.title)),
+          ...initialArticles.filter(ia => 
+            !pdfArticles.find(pa => pa.title === ia.title) &&
+            !transformedArticles.find(ta => ta.title === ia.title)
+          )
+        ];
+
+        setArticles(allArticles);
       } catch (error) {
-        console.error("Error loading articles from JSON:", error);
-        // Fallback to initial articles if JSON fails
+        console.error("Error loading articles:", error);
+        // Fallback to initial articles if everything fails
         setArticles(initialArticles);
       } finally {
         setLoading(false);

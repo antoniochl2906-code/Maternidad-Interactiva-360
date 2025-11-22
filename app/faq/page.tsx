@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { HelpCircle, MessageSquare, Send, Mail, Phone, User, Star, ExternalLink, ThumbsUp, ThumbsDown } from "lucide-react";
+import { HelpCircle, MessageSquare, Send, Mail, Phone, User, Star, ExternalLink, ThumbsUp, ThumbsDown, Calendar, Clock } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageCard from "@/components/ImageCard";
 import Link from "next/link";
@@ -445,16 +445,24 @@ export default function FAQPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center space-x-2 text-muted-foreground">
                     <Mail className="h-4 w-4 text-primary" />
-                    <span>contacto@maternidad360.com</span>
+                    <span>maternidadinteractiva306@outlook.es</span>
                   </div>
-                  <div className="flex items-center space-x-2 text-muted-foreground">
+                  <div className="flex items-center space-x-2">
                     <Phone className="h-4 w-4 text-primary" />
-                    <span>+1 (555) 123-4567</span>
+                    <a 
+                      href="https://wa.me/59176284890" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline font-semibold"
+                    >
+                      +591 76284890
+                    </a>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground mt-4">
-                  * Horario de atención: Lunes a Viernes de 9:00 AM a 6:00 PM
-                </p>
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
+                  <Clock className="h-4 w-4 text-primary" />
+                  <span>🕒 Todos los días los 365 días del año</span>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -463,5 +471,6 @@ export default function FAQPage() {
     </div>
   );
 }
+
 
 

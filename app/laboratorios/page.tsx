@@ -227,6 +227,21 @@ export default function LaboratoriosPage() {
                   </motion.div>
                 </div>
                 
+                {/* Imagen real en lugar de iconos animados */}
+                <div className="relative bg-gradient-to-br from-primary/10 to-secondary/10 p-8 flex items-center justify-center min-h-[250px]">
+                  <div className="relative w-full h-full">
+                    <img
+                      src="/LABORATORIOS.jpg"
+                      alt="Exámenes de laboratorio en embarazo"
+                      className="w-full h-full object-cover rounded-lg"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                </div>
+                
                 <CardHeader className="p-8">
                   <div className="flex items-center space-x-3 mb-4">
                     <motion.div
