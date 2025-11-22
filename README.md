@@ -100,7 +100,7 @@ Tipografía: Poppins y Nunito
 
 ## ⚠️ Aviso Importante
 
-**Este sistema NO reemplaza la consulta médica.** La información y calculadoras proporcionadas son orientativas y educativas. Siempre consulta con tu médico o profesional de la salud para diagnóstico, tratamiento y seguimiento de tu embarazo. En caso de emergencia, acude inmediatamente a un centro de salud.
+**Este sistema NO reemplaza la consulta médica.** La información y calculadoras proporcionadas son orientativas y educativas. Siempre consulta con tu médico o profesional de la salud para diagnóstico, tratamiento y seguimiento de tu embarazo. En caso de emergencia, acude inmediatamente a un centro de salud..
 
 ## 📝 Licencia
 
