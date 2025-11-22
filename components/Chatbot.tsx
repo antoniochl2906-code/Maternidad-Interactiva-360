@@ -113,13 +113,62 @@ export default function Chatbot() {
     }
   }, [isOpen]);
 
-  // Check if user has seen tour
+  // Check if user has seen tour and restore tour state if active
   useEffect(() => {
     if (typeof window !== "undefined") {
       const seen = localStorage.getItem("mi360_seen_tour");
       setHasSeenTour(!!seen);
     }
   }, []);
+
+  // Restaurar tour cuando el chatbot se abre (ejecutar ANTES del useEffect de inicialización)
+  useEffect(() => {
+    if (isOpen && typeof window !== "undefined") {
+      const tourActive = localStorage.getItem("mi360_tour_active");
+      const savedStep = localStorage.getItem("mi360_tour_step");
+      
+      if (tourActive === "true" && savedStep && messages.length === 0) {
+        const stepIndex = parseInt(savedStep, 10);
+        if (!isNaN(stepIndex) && stepIndex >= 0 && stepIndex < TOUR_STEPS.length) {
+          setTourActive(true);
+          setTourStep(stepIndex);
+          // Crear el mensaje del paso actual
+          const step = TOUR_STEPS[stepIndex];
+          const isLast = stepIndex === TOUR_STEPS.length - 1;
+          const stepMessage: Message = {
+            id: Date.now(),
+            text: `${stepIndex + 1}/${TOUR_STEPS.length}: ${step.section}\n\n${step.description}`,
+            sender: "bot",
+            timestamp: new Date(),
+            actions: [
+              {
+                label: "Ir a esta sección",
+                action: () => {
+                  localStorage.setItem("mi360_tour_step", stepIndex.toString());
+                  localStorage.setItem("mi360_tour_active", "true");
+                  router.push(step.route);
+                },
+                variant: "primary",
+              },
+              {
+                label: isLast ? "Finalizar" : "Siguiente",
+                action: () => {
+                  nextTourStep();
+                },
+                variant: "secondary",
+              },
+              {
+                label: "Saltar tour",
+                action: () => skipTour(),
+                variant: "secondary",
+              },
+            ],
+          };
+          setMessages([stepMessage]);
+        }
+      }
+    }
+  }, [isOpen]);
 
   // Initialize messages with tour if first visit
   useEffect(() => {
@@ -171,13 +220,18 @@ export default function Chatbot() {
     setTourActive(true);
     setTourStep(0);
     localStorage.setItem("mi360_seen_tour", "true");
+    localStorage.setItem("mi360_tour_active", "true");
+    localStorage.setItem("mi360_tour_step", "0");
     setHasSeenTour(true);
     showTourStep(0);
   };
 
   const skipTour = () => {
     localStorage.setItem("mi360_seen_tour", "true");
+    localStorage.removeItem("mi360_tour_active");
+    localStorage.removeItem("mi360_tour_step");
     setHasSeenTour(true);
+    setTourActive(false);
     setMessages([
       {
         id: Date.now(),
@@ -204,6 +258,10 @@ export default function Chatbot() {
     const step = TOUR_STEPS[stepIndex];
     const isLast = stepIndex === TOUR_STEPS.length - 1;
 
+    // Guardar el paso actual en localStorage para persistencia
+    localStorage.setItem("mi360_tour_step", stepIndex.toString());
+    localStorage.setItem("mi360_tour_active", "true");
+
     const stepMessage: Message = {
       id: Date.now(),
       text: `${stepIndex + 1}/${TOUR_STEPS.length}: ${step.section}\n\n${step.description}`,
@@ -213,16 +271,20 @@ export default function Chatbot() {
         {
           label: "Ir a esta sección",
           action: () => {
+            // Guardar el paso antes de navegar
+            localStorage.setItem("mi360_tour_step", stepIndex.toString());
+            localStorage.setItem("mi360_tour_active", "true");
             router.push(step.route);
-            setTimeout(() => {
-              nextTourStep();
-            }, 500);
+            // NO llamar a nextTourStep aquí porque puede perderse el estado al navegar
+            // En su lugar, el usuario puede continuar con "Siguiente" después de ver la página
           },
           variant: "primary",
         },
         {
           label: isLast ? "Finalizar" : "Siguiente",
-          action: () => nextTourStep(),
+          action: () => {
+            nextTourStep();
+          },
           variant: "secondary",
         },
         {
@@ -239,11 +301,19 @@ export default function Chatbot() {
   const nextTourStep = () => {
     const next = tourStep + 1;
     setTourStep(next);
-    showTourStep(next);
+    // Guardar el nuevo paso
+    localStorage.setItem("mi360_tour_step", next.toString());
+    if (next < TOUR_STEPS.length) {
+      showTourStep(next);
+    } else {
+      endTour();
+    }
   };
 
   const endTour = () => {
     setTourActive(false);
+    localStorage.removeItem("mi360_tour_active");
+    localStorage.removeItem("mi360_tour_step");
     setMessages([
       {
         id: Date.now(),
